@@ -1,0 +1,347 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Scicopod Hub | Break In Story", "BloodTheme")
+
+
+--Home
+
+local Home = Window:NewTab("Home")
+
+local HomeSection = Home:NewSection("Welcome To Scicopod Hub")
+
+HomeSection:NewLabel("If You Want More Scicopod Hubs Join Our Server!")
+
+HomeSection:NewLabel("Click Other Tabs To See The Scripts")
+
+HomeSection:NewLabel("Pls Join My Discord Server To See All Of The Script")
+
+HomeSection:NewLabel("Discord Server :  https://discord.gg/TdqaKWB3kd")
+
+-- Player
+
+local Player = Window:NewTab("Player")
+
+local PlayerSection = Player:NewSection("Player")
+
+PlayerSection:NewButton("E To Fly", "Sometimes this script is broken", function()
+    repeat wait() 
+	until game.Players.LocalPlayer and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:findFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:findFirstChild("Humanoid") 
+	local mouse = game.Players.LocalPlayer:GetMouse() 
+	repeat wait() until mouse
+	local plr = game.Players.LocalPlayer 
+	local torso = plr.Character.HumanoidRootPart 
+	local flying = true
+	local deb = true 
+	local ctrl = {f = 0, b = 0, l = 0, r = 0} 
+	local lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+	local maxspeed = 50 
+	local speed = 0 
+
+	function Fly() 
+        local bg = Instance.new("BodyGyro", torso) 
+        bg.P = 9e4 
+        bg.maxTorque = Vector3.new(9e9, 9e9, 9e9) 
+        bg.cframe = torso.CFrame 
+        local bv = Instance.new("BodyVelocity", torso) 
+        bv.velocity = Vector3.new(0,0.1,0) 
+        bv.maxForce = Vector3.new(9e9, 9e9, 9e9) 
+        repeat wait() 
+            plr.Character.Humanoid.PlatformStand = true 
+            if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then 
+                speed = speed+.5+(speed/maxspeed) 
+                if speed > maxspeed then 
+                    speed = maxspeed 
+                end 
+            elseif not (ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0) and speed ~= 0 then 
+                speed = speed-1 
+                if speed < 0 then 
+                    speed = 0 
+                end 
+            end 
+            if (ctrl.l + ctrl.r) ~= 0 or (ctrl.f + ctrl.b) ~= 0 then 
+                bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (ctrl.f+ctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(ctrl.l+ctrl.r,(ctrl.f+ctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+                lastctrl = {f = ctrl.f, b = ctrl.b, l = ctrl.l, r = ctrl.r} 
+            elseif (ctrl.l + ctrl.r) == 0 and (ctrl.f + ctrl.b) == 0 and speed ~= 0 then 
+                bv.velocity = ((game.Workspace.CurrentCamera.CoordinateFrame.lookVector * (lastctrl.f+lastctrl.b)) + ((game.Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lastctrl.l+lastctrl.r,(lastctrl.f+lastctrl.b)*.2,0).p) - game.Workspace.CurrentCamera.CoordinateFrame.p))*speed 
+            else 
+                bv.velocity = Vector3.new(0,0.1,0) 
+            end 
+            bg.cframe = game.Workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((ctrl.f+ctrl.b)*50*speed/maxspeed),0,0) 
+        until not flying 
+        ctrl = {f = 0, b = 0, l = 0, r = 0} 
+        lastctrl = {f = 0, b = 0, l = 0, r = 0} 
+        speed = 0 
+        bg:Destroy() 
+        bv:Destroy() 
+        plr.Character.Humanoid.PlatformStand = false 
+	end 
+	mouse.KeyDown:connect(function(key) 
+        if key:lower() == "e" then 
+            if flying then flying = false 
+            else 
+                flying = true 
+                Fly() 
+            end 
+        elseif key:lower() == "w" then 
+        ctrl.f = 1 
+    elseif key:lower() == "s" then 
+		ctrl.b = -1 
+    elseif key:lower() == "a" then 
+        ctrl.l = -1 
+    elseif key:lower() == "d" then 
+        ctrl.r = 1 
+        end 
+    end) 
+	mouse.KeyUp:connect(function(key) 
+        if key:lower() == "w" then 
+            ctrl.f = 0 
+        elseif key:lower() == "s" then 
+            ctrl.b = 0 
+        elseif key:lower() == "a" then 
+            ctrl.l = 0 
+        elseif key:lower() == "d" then 
+            ctrl.r = 0 
+        end 
+	end)
+	Fly()
+    end)
+
+PlayerSection:NewButton("Invisible", "Credits In The Owner", function()
+    local removeNametags = true
+
+    local plr = game:GetService("Players").LocalPlayer
+    local plr = game:GetService("Players").LocalPlayer
+    local plr = game:GetService("Players").LocalPlayer
+    local character = plr.Character
+    local plr = game:GetService("Players").LocalPlayer
+    local hrp = character.HumanoidRootPart
+    local plr = game:GetService("Players").LocalPlayer
+    local old = hrp.CFrame
+
+    if not character:FindFirstChild("LowerTorso") or character.PrimaryPart ~= hrp then
+        return print("unsupported")
+    end
+
+    if removeNametags then
+        local tag = hrp:FindFirstChildOfClass("BillboardGui")
+        if tag then tag:Destroy() end
+
+        hrp.ChildAdded:Connect(function(item)
+            if item:IsA("BillboardGui") then
+                task.wait()
+                item:Destroy()
+            end
+        end)
+    end
+
+    local newroot = character.LowerTorso.Root:Clone()
+    hrp.Parent = workspace
+    character.PrimaryPart = hrp
+    character:MoveTo(Vector3.new(old.X,9e9,old.Z))
+    hrp.Parent = character
+    task.wait(0.5)
+    newroot.Parent = hrp
+    hrp.CFrame = old
+end)
+
+PlayerSection:NewButton("Noclip", "Noclip", function()
+    local runservice = game:GetService("RunService")
+
+    local player = game:GetService("Players").LocalPlayer
+    runservice.Stepped:Connect(function()
+    for i,v in pairs(player.Character:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.CanCollide = false
+           end
+        end
+    end)
+
+end)
+
+local PlayerSection = Player:NewSection("Sliders")
+
+PlayerSection:NewSlider("WalkSpeed", "Select WalkSpeed", 555, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+PlayerSection:NewSlider("JumpPower", "Select JumpPower", 555, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+--Foods
+
+local Foods = Window:NewTab("Foods")
+
+local FoodsSection = Foods:NewSection("Foods")
+
+FoodsSection:NewButton("Chips", "Give Chips", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Chips")
+end)
+
+FoodsSection:NewButton("Bloxy Cola", "Bloxy Cola", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("BloxyCola")
+end)
+
+FoodsSection:NewButton("Apple", "Apple", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
+end)
+
+FoodsSection:NewButton("Epic Pizza", "Epic Pizza", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Pizza2")
+end)
+
+FoodsSection:NewButton("Rotten Pizza", "Rotten", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("EpicPizza")
+end)
+
+FoodsSection:NewButton("Lollipop", "Lollipop", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Lollipop")
+end)
+
+--Weapons
+
+local Weapons = Window:NewTab("Weapons")
+
+local WeaponsSection = Weapons:NewSection("Weapons")
+
+WeaponsSection:NewButton("Hammer", "Hammer", function()
+    local A_1 = true
+    local A_2 = "Hammer"
+    local Event = game:GetService("ReplicatedStorage").RemoteEvents.BasementWeapon
+    Event:FireServer(A_1, A_2)
+end)
+
+WeaponsSection:NewButton("Sword", "Sword", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("LinkedSword")
+end)
+
+WeaponsSection:NewButton("Hammer", "Hammer", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Bat")
+end)
+
+WeaponsSection:NewButton("Bat", "Bat", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Bat")
+end)
+
+--Roles
+
+local Roles = Window:NewTab("Roles")
+
+local RolesSection = Roles:NewSection("Roles")
+
+RolesSection:NewButton("Swat", "Swat", function()
+    local A_1 = "SwatGun"
+    local A_2 = true
+    local Event = game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole
+    Event:FireServer(A_1, A_2)
+end)
+
+RolesSection:NewButton("Police", "Police", function()
+    local A_1 = "Gun"
+    local A_2 = true
+    local Event = game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole
+    Event:FireServer(A_1, A_2)
+end)
+
+--Teddy
+
+local Teddy = Window:NewTab("Other Items")
+
+local TeddySection = Teddy:NewSection("Items")
+
+TeddySection:NewButton("Teddy Bear", "Teddy!", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("TeddyBloxpin")
+end)
+
+TeddySection:NewButton("Plank", "u got the whole squad laughing", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Plank")
+end)
+
+--Remotes
+
+local Remotes = Window:NewTab("Remotes")
+
+local RemotesSection = Remotes:NewSection("Remotes")
+
+RemotesSection:NewButton("Be Friend With Cat", "Be Friend With Cat", function()
+    local Target = game:GetService("ReplicatedStorage").RemoteEvents.Cattery;
+    Target:FireServer();
+end)
+
+RemotesSection:NewButton("Remove Items", "Remove Items", function()
+    for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+        if v:IsA("Tool") then
+            v:Destroy()
+        end
+    end
+end)
+
+RemotesSection:NewButton("Get Full Health [Be A Friend With Cat First!]", "Health", function()
+    for i = 1, 555 do
+        wait(0.00000000000000000000001)
+        local A_1 = "Cat"
+        local Event = game:GetService("ReplicatedStorage").RemoteEvents.Energy
+        Event:FireServer(A_1)
+    end
+end)
+
+RemotesSection:NewButton("Drop Item", "Drop Item", function()
+    while wait(1) do
+        for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
+            if v:IsA("Tool") then
+                v.CanBeDropped = true
+            end
+        end
+    end
+end)
+
+RemotesSection:NewButton("Kill Bad Gays [Don't Spam If Ur Not Gay!]", "You're Gay.", function()
+    for i,v in pairs(game.Workspace.BadGuys:GetChildren()) do
+        for i = 1, 50 do
+            game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v,10)
+            game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v,996)
+            game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v,9)
+            game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v,8)
+            game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v,996)
+        end
+    end
+end)
+
+RemotesSection:NewButton("Open Safe", "Open Safe", function()
+    game.ReplicatedStorage.RemoteEvents.Safe:FireServer(game:GetService("Workspace").CodeNote.SurfaceGui.TextLabel.Text)
+end)
+
+--Teleport
+
+local Teleport = Window:NewTab("Teleport")
+
+local TeleportSection = Teleport:NewSection("Teleport")
+
+TeleportSection:NewButton("Boss Fight Place", "Pls Fuck The Old Chunky", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-39, -287, -1480)
+end)
+
+TeleportSection:NewButton("Sewer", "Ur A Rat.", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, 3, -125)
+end)
+
+TeleportSection:NewButton("Store", "amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus amongus ", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-422, 3, -121)
+end)
+
+TeleportSection:NewButton("Attic", "Attack On Gays!", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-16, 35, -220)
+end)
+
+TeleportSection:NewButton("House", "You Got Fucked By A Horse :Moyai:", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 3, -200)
+end)
+
+TeleportSection:NewButton("Basement", "Shut up kids or I'll call savage dad to whip ur butt", function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71, -15, -163)
+end)
+
+--Credits
+
+local Credits = Window:NewTab("Credits")
+
+local CreditsSection = Credits:NewSection("Created By Scicopod#6570")

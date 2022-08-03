@@ -1,12 +1,13 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("Scicopod Hub | Break In Story", "BloodTheme")
 
-
 --Home
 
 local Home = Window:NewTab("Home")
 
 local HomeSection = Home:NewSection("Welcome To Scicopod Hub")
+
+HomeSection:NewLabel("If Ur Gonna The Roles Use It In The Lobby First")
 
 HomeSection:NewLabel("If You Want More Scicopod Hubs Join Our Server!")
 
@@ -173,6 +174,10 @@ local Foods = Window:NewTab("Foods")
 
 local FoodsSection = Foods:NewSection("Foods")
 
+FoodsSection:NewButton("Pie", "Pie on you're face", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Pie")
+end)
+
 FoodsSection:NewButton("Chips", "Give Chips", function()
     game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Chips")
 end)
@@ -197,6 +202,10 @@ FoodsSection:NewButton("Lollipop", "Lollipop", function()
     game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Lollipop")
 end)
 
+FoodsSection:NewButton("Cookie", "Cookie", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Cookie")
+end)
+
 --Weapons
 
 local Weapons = Window:NewTab("Weapons")
@@ -212,10 +221,6 @@ end)
 
 WeaponsSection:NewButton("Sword", "Sword", function()
     game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("LinkedSword")
-end)
-
-WeaponsSection:NewButton("Hammer", "Hammer", function()
-    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Bat")
 end)
 
 WeaponsSection:NewButton("Bat", "Bat", function()
@@ -242,6 +247,13 @@ RolesSection:NewButton("Police", "Police", function()
     Event:FireServer(A_1, A_2)
 end)
 
+RolesSection:NewButton("The Fighter", "Fighter", function()
+    local A_1 = "Sword"
+    local A_2 = true
+    local Event = game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole
+    Event:FireServer(A_1, A_2)
+end)
+
 --Teddy
 
 local Teddy = Window:NewTab("Other Items")
@@ -254,6 +266,18 @@ end)
 
 TeddySection:NewButton("Plank", "u got the whole squad laughing", function()
     game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Plank")
+end)
+
+TeddySection:NewButton("Medkit", "Medkit", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("MedKit")
+end)
+
+TeddySection:NewButton("Cure", "Cure", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Cure")
+end)
+
+TeddySection:NewButton("Car Key", "Key", function()
+    game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("CarKey")
 end)
 
 --Remotes
